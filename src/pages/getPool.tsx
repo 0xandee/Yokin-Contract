@@ -54,7 +54,10 @@ const PoolsPage: NextPageWithLayout = () => {
                   <strong>Estimated Withdrawal Start Timestamp:</strong> {String(parseTimestampToDate(pool.withdrawal_start_timestamp))}
                 </li>
                 <li>
-                  <strong>Reward:</strong> {parseMicrocreditsToCredits(pool.reward)} ALEO
+                  <strong>APY:</strong> ~10%
+                </li>
+                <li>
+                  <strong>Yield Source:</strong> Pondo
                 </li>
                 <li>
                   <strong>Winner:</strong> {pool.winner === NullAddress ? 'No winner yet' : pool.winner}

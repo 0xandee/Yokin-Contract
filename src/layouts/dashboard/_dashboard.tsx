@@ -1,49 +1,115 @@
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 import cn from 'classnames';
-import { useWindowScroll } from '@/lib/hooks/use-window-scroll';
-import Hamburger from '@/components/ui/hamburger';
-import { useIsMounted } from '@/lib/hooks/use-is-mounted';
-import { useDrawer } from '@/components/drawer-views/context';
-import Sidebar from '@/layouts/dashboard/_sidebar';
-import React, { FC, useMemo } from 'react';
+import Logo from '@/components/ui/logo';
 import { WalletMultiButton } from '@demox-labs/aleo-wallet-adapter-reactui';
+import { useWallet } from '@demox-labs/aleo-wallet-adapter-react';
 
 require('@demox-labs/aleo-wallet-adapter-reactui/dist/styles.css');
 
-function HeaderRightArea() {
+type ViewType = 'admin' | 'user';
+
+function HeaderTabs() {
+  const router = useRouter();
+  const [activeView, setActiveView] = useState<ViewType>('user');
+
+  // Auto-detect if we're on an admin or user route
+  useEffect(() => {
+    // Define admin and user routes
+    const adminRoutes = ['/initialize', '/createPool', '/startSlowWithdraw', '/claimSlowWithdraw', '/randomWinner'];
+    const userRoutes = ['/getPool', '/deposit', '/withdraw'];
+
+    if (adminRoutes.includes(router.pathname)) {
+      setActiveView('admin');
+    } else if (userRoutes.includes(router.pathname)) {
+      setActiveView('user');
+    }
+  }, [router.pathname]);
+
+  const handleTabClick = (view: ViewType) => {
+    setActiveView(view);
+    // Redirect to the first page in that view
+    if (view === 'admin') {
+      router.push('/initialize');
+    } else {
+      router.push('/');
+    }
+  };
+
   return (
-    <div className="relative order-last flex shrink-0 items-center gap-3 sm:gap-6 lg:gap-8">
-      <WalletMultiButton className="bg-[#1253fa]" />
+    <div className="flex overflow-hidden rounded-lg bg-white/10 p-1 backdrop-blur-md ml-12">
+      <button
+        onClick={() => handleTabClick('user')}
+        className={cn(
+          'relative px-4 py-1.5 text-sm font-medium transition-colors',
+          activeView === 'user'
+            ? 'bg-white text-black rounded-md'
+            : 'text-white hover:bg-white/10 rounded-md'
+        )}
+      >
+        Users
+      </button>
+      <button
+        onClick={() => handleTabClick('admin')}
+        className={cn(
+          'relative px-4 py-1.5 text-sm font-medium transition-colors',
+          activeView === 'admin'
+            ? 'bg-white text-black rounded-md'
+            : 'text-white hover:bg-white/10 rounded-md'
+        )}
+      >
+        Admin
+      </button>
+    </div>
+  );
+}
+
+// Custom styled wallet button
+function StyledWalletButton() {
+  const { publicKey, connected } = useWallet();
+
+  return (
+    <div className="flex">
+      <WalletMultiButton
+        className="rounded-md bg-white hover:bg-gray-100 transition-colors font-medium"
+        style={{
+          padding: '8px 16px',
+          fontSize: '14px',
+          border: 'none',
+          minWidth: 'auto',
+          height: 'auto',
+          lineHeight: 'normal',
+          color: 'black'
+        }}
+      />
+      {/* Add custom styling to overcome any default styling issues */}
+      <style jsx global>{`
+        .wallet-adapter-button {
+          color: black !important;
+          background-color: white !important;
+        }
+        .wallet-adapter-button-trigger {
+          background-color: white !important;
+        }
+        .wallet-adapter-button:not([disabled]):hover {
+          background-color: #f3f4f6 !important;
+        }
+      `}</style>
     </div>
   );
 }
 
 export function Header() {
-  const { openDrawer } = useDrawer();
-  const isMounted = useIsMounted();
-  let windowScroll = useWindowScroll();
-  let [isOpen, setIsOpen] = useState(false);
-
   return (
-    <nav
-      className={`fixed top-0 z-30 w-full transition-all duration-300 ltr:right-0 rtl:left-0 ${isMounted && windowScroll.y > 10
-        ? 'h-16 bg-gradient-to-b from-white to-white/80 shadow-card backdrop-blur dark:from-dark dark:to-dark/80 sm:h-20'
-        : 'h-16 sm:h-24'
-        }`}
-    >
-      <div className="flex h-full items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-10 3xl:px-12">
-        <div className="flex items-center">
-          <div className="block ltr:mr-1 rtl:ml-1 ltr:sm:mr-3 rtl:sm:ml-3 xl:hidden">
-            {/* <Hamburger
-              isOpen={isOpen}
-              onClick={() => openDrawer('DASHBOARD_SIDEBAR')}
-              variant="transparent"
-              className="dark:text-white"
-            /> */}
-          </div>
-        </div>
+    <nav className="fixed top-0 z-30 flex w-full items-center justify-between px-4 py-4 sm:px-6 lg:px-8 xl:px-10 3xl:px-12">
+      <div className="flex items-center">
+        <Logo />
+      </div>
 
-        <HeaderRightArea />
+      <HeaderTabs />
+
+      <div className="flex items-center">
+        <StyledWalletButton />
       </div>
     </nav>
   );
@@ -58,12 +124,11 @@ export default function Layout({
   contentClassName,
 }: React.PropsWithChildren<DashboardLayoutProps>) {
   return (
-    <div>
+    <div className="flex min-h-screen flex-col bg-[#061326] text-white">
       <Header />
-      {/* <Sidebar className="hidden xl:block" /> */}
       <main
         className={cn(
-          'min-h-[100vh] px-4 pt-24 pb-16 sm:px-6 sm:pb-20 lg:px-8 xl:px-10 xl:pb-24 3xl:px-12',
+          'flex flex-grow flex-col ',
           contentClassName
         )}
       >

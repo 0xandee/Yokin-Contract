@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect, ChangeEvent } from 'react';
 import type { NextPageWithLayout } from '@/types';
 import { NextSeo } from 'next-seo';
@@ -43,14 +44,61 @@ const Withdraw: NextPageWithLayout = () => {
     setPlayer(publicKey ?? '');
   }, [publicKey]);
 
+  const [hashed, setHashed] = useState<string | null>(null);
+  const [hashLoading, setHashLoading] = useState(false);
+  const [hashError, setHashError] = useState<string | null>(null);
+
+  // Use the API endpoint instead of direct WASM import
   useEffect(() => {
-    if (player && poolId) {
-      getUserBalanceInPool(player, poolId).then(balance => {
-        setDepositAmount(balance);
-        setTotalCreditsRedeem(balance + reward);
-      });
+    async function fetchHash() {
+      if (!player) return;
+
+      setHashLoading(true);
+      setHashError(null);
+
+      try {
+        const response = await fetch('/api/hash', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            player: player,
+            pool_id: poolId ? poolId.toString() : "1"
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          console.log("Hash result:", data.hash);
+          setHashed(data.hash);
+        } else {
+          console.error("Hash error:", data.error);
+          setHashError(data.error || "Failed to generate hash");
+        }
+      } catch (error) {
+        console.error("API call error:", error);
+        setHashError(error instanceof Error ? error.message : "Unknown error");
+      } finally {
+        setHashLoading(false);
+      }
+    }
+
+    // Only call the API if we have a player address
+    if (player) {
+      fetchHash();
     }
   }, [player, poolId]);
+
+  // useEffect(() => {
+  //   if (player && poolId) {
+  //     getUserBalanceInPool(player, poolId).then(balance => {
+  //       setDepositAmount(balance);
+  //       setTotalCreditsRedeem(balance + reward);
+  //     });
+  //   }
+  // }, [player, poolId]);
 
   useEffect(() => {
     if (poolId) {
@@ -150,7 +198,7 @@ const Withdraw: NextPageWithLayout = () => {
             <input
               type="number"
               className="w-10/12 appearance-none rounded-lg border-2 border-gray-200 bg-transparent py-1 text-sm tracking-tighter text-gray-900 outline-none transition-all placeholder:text-gray-600 focus:border-gray-900 ltr:pr-5 ltr:pl-10 rtl:pr-10 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-500"
-              placeholder="Pool ID"
+              placeholder="Pool ID" min={1}
               onChange={(event) => { setPoolId(Number(event.currentTarget.value)) }}
               value={poolId ?? ''}
             />

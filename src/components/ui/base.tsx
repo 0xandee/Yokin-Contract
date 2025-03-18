@@ -15,46 +15,19 @@ import { fadeInBottom } from '@/lib/framer-motion/fade-in-bottom';
 // dynamic import
 const Listbox = dynamic(() => import('@/components/ui/list-box'));
 
-// const baseMenu = [
-//   {
-//     name: 'Sign',
-//     value: routes.sign,
-//   },
-//   {
-//     name: 'Decrypt',
-//     value: routes.decrypt,
-//   },
-//   {
-//     name: 'Records',
-//     value: routes.records,
-//   },
-//   {
-//     name: 'Transfer',
-//     value: routes.transfer,
-//   },
-//   {
-//     name: 'Deposit (User)',
-//     value: routes.deposit,
-//   },
-//   {
-//     name: 'Execute',
-//     value: routes.execute,
-//   },
-//   {
-//     name: 'Deploy',
-//     value: routes.deploy,
-//   },
-// ];
+// Separate admin and user menu items
+const adminMenu = [
+  { name: 'Initialize', value: routes.initialize },
+  { name: 'Create Pool', value: routes.createPool },
+  { name: 'Start Slow Withdrawal', value: routes.startSlowWithdraw },
+  { name: 'Claim Slow Withdrawal', value: routes.claimSlowWithdraw },
+  { name: 'Random Winner', value: routes.randomWinner },
+];
 
-const baseMenu = [
-  { name: 'Initialize (Admin)', value: routes.initialize },
-  { name: 'Create Pool (Admin)', value: routes.createPool },
-  { name: 'Get Pools (User)', value: routes.getPool },
-  { name: 'Deposit (User)', value: routes.deposit },
-  { name: 'Start Slow Withdrawal (Admin)', value: routes.startSlowWithdraw },
-  { name: 'Claim Slow Withdrawal (Admin)', value: routes.claimSlowWithdraw },
-  { name: 'Random Winner (Admin)', value: routes.randomWinner },
-  { name: 'Withdraw (User)', value: routes.withdraw },
+const userMenu = [
+  { name: 'Get Pools', value: routes.getPool },
+  { name: 'Deposit', value: routes.deposit },
+  { name: 'Withdraw', value: routes.withdraw },
 ];
 
 function ActiveNavLink({ href, title, isActive, className }: any) {
@@ -78,27 +51,92 @@ function ActiveNavLink({ href, title, isActive, className }: any) {
   );
 }
 
+function TabButton({ title, isActive, onClick }: any) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        'relative z-[1] inline-flex items-center py-2 px-4 text-sm font-medium transition-colors',
+        isActive
+          ? 'text-white'
+          : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+      )}
+    >
+      <span>{title}</span>
+      {isActive && (
+        <motion.span
+          className="absolute left-0 right-0 bottom-0 -z-[1] h-full w-full rounded-lg bg-brand shadow-large"
+          layoutId="activeTabIndicator"
+        />
+      )}
+    </button>
+  );
+}
+
 export default function Base({ children }: React.PropsWithChildren<{}>) {
   const router = useRouter();
   const isMounted = useIsMounted();
   const breakpoint = useBreakpoint();
-  const currentPath = baseMenu.findIndex(
+  const [activeView, setActiveView] = useState('user'); // Default to user view
+
+  // Determine which menu to use based on the active view
+  const currentMenu = activeView === 'admin' ? adminMenu : userMenu;
+
+  // Find the current path in the active menu
+  const currentPathIndex = currentMenu.findIndex(
     (item) => item.value === router.pathname
   );
-  let [selectedMenuItem, setSelectedMenuItem] = useState(baseMenu[0]);
+
+  let [selectedMenuItem, setSelectedMenuItem] = useState(
+    currentPathIndex !== -1 ? currentMenu[currentPathIndex] : currentMenu[0]
+  );
+
   function handleRouteOnSelect(path: string) {
     router.push(path);
   }
+
+  // Auto-detect the correct view based on the current route
   useEffect(() => {
-    setSelectedMenuItem(baseMenu[currentPath]);
-  }, [currentPath]);
+    const isAdminRoute = adminMenu.some(item => item.value === router.pathname);
+    const isUserRoute = userMenu.some(item => item.value === router.pathname);
+
+    if (isAdminRoute) {
+      setActiveView('admin');
+    } else if (isUserRoute) {
+      setActiveView('user');
+    }
+
+    // Update selected menu item
+    const menu = isAdminRoute ? adminMenu : userMenu;
+    const index = menu.findIndex(item => item.value === router.pathname);
+    if (index !== -1) {
+      setSelectedMenuItem(menu[index]);
+    } else if (menu.length > 0) {
+      setSelectedMenuItem(menu[0]);
+    }
+  }, [router.pathname]);
+
   return (
     <div className="pt-8 text-sm xl:pt-10">
       <div className="mx-auto w-full rounded-lg bg-white p-5 pt-4 shadow-card dark:bg-light-dark xs:p-6 xs:pt-5">
-        <nav className="mb-5 min-h-[40px] border-b border-dashed border-gray-200 pb-4 uppercase tracking-wider dark:border-gray-700 xs:mb-6 xs:pb-5 xs:tracking-wide">
+        {/* Tab navigation to switch between admin and user views */}
+        <div className="mb-5 flex justify-center space-x-2 border-b border-dashed border-gray-200 pb-4 dark:">
+          <TabButton
+            title="User"
+            isActive={activeView === 'user'}
+            onClick={() => setActiveView('user')}
+          />
+          <TabButton
+            title="Admin"
+            isActive={activeView === 'admin'}
+            onClick={() => setActiveView('admin')}
+          />
+        </div>
+
+        <nav className="mb-5 min-h-[40px] border-b border-dashed border-gray-200 pb-4 uppercase tracking-wider dark: xs:mb-6 xs:pb-5 xs:tracking-wide">
           {isMounted && ['xs'].indexOf(breakpoint) !== -1 && (
             <Listbox
-              options={baseMenu}
+              options={currentMenu}
               selectedOption={selectedMenuItem}
               onChange={setSelectedMenuItem}
               onSelect={(path) => handleRouteOnSelect(path)}
@@ -118,7 +156,7 @@ export default function Base({ children }: React.PropsWithChildren<{}>) {
             </Listbox>
           )}
           <div className="hidden items-center justify-between text-gray-600 dark:text-gray-400 sm:flex">
-            {baseMenu.map((item) => (
+            {currentMenu.map((item) => (
               <ActiveNavLink
                 key={item.name}
                 href={item.value}

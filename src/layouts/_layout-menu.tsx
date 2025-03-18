@@ -109,9 +109,8 @@ export default function DrawerMenu() {
                 <Menu.Button className="flex items-center justify-between border-t border-dashed py-3.5 text-justify text-sm font-medium uppercase text-gray-900 transition first:border-t-0 hover:text-gray-900 dark:text-white dark:hover:text-white">
                   Explore
                   <ChevronForward
-                    className={`ml-3 transition-transform ${
-                      open ? 'rotate-90' : ''
-                    }`}
+                    className={`ml-3 transition-transform ${open ? 'rotate-90' : ''
+                      }`}
                   />
                 </Menu.Button>
                 <Transition
@@ -159,14 +158,14 @@ export default function DrawerMenu() {
 
           <ActiveLink
             href="/"
-            className="border-t border-dashed py-3.5 text-sm font-medium uppercase text-gray-900 transition first:border-t-0 hover:text-gray-900 dark:border-gray-700 dark:text-white"
+            className="border-t border-dashed py-3.5 text-sm font-medium uppercase text-gray-900 transition first:border-t-0 hover:text-gray-900 dark: dark:text-white"
             activeClassName="text-gray-900 dark:text-white"
           >
             Feed
           </ActiveLink>
           <ActiveLink
             href="/"
-            className="border-t border-dashed py-3.5 text-sm font-medium uppercase text-gray-900 transition first:border-t-0 hover:text-gray-900 dark:border-gray-700 dark:text-white"
+            className="border-t border-dashed py-3.5 text-sm font-medium uppercase text-gray-900 transition first:border-t-0 hover:text-gray-900 dark: dark:text-white"
             activeClassName="text-gray-900 dark:text-white"
           >
             Activity
@@ -175,12 +174,11 @@ export default function DrawerMenu() {
           <Menu>
             {({ open }) => (
               <>
-                <Menu.Button className="flex items-center justify-between border-t border-dashed py-3.5 text-justify text-sm font-medium uppercase text-gray-900 transition first:border-t-0 hover:text-gray-900 dark:border-gray-700 dark:text-white dark:hover:text-white">
+                <Menu.Button className="flex items-center justify-between border-t border-dashed py-3.5 text-justify text-sm font-medium uppercase text-gray-900 transition first:border-t-0 hover:text-gray-900 dark: dark:text-white dark:hover:text-white">
                   Account
                   <ChevronForward
-                    className={`ml-3 transition-transform ${
-                      open ? 'rotate-90' : ''
-                    }`}
+                    className={`ml-3 transition-transform ${open ? 'rotate-90' : ''
+                      }`}
                   />
                 </Menu.Button>
                 <Transition
@@ -237,7 +235,7 @@ export default function DrawerMenu() {
 
           <ActiveLink
             href="/"
-            className="border-t border-dashed py-3.5 text-sm font-medium uppercase text-gray-900 transition first:border-t-0 hover:text-gray-900 dark:border-gray-700 dark:text-white"
+            className="border-t border-dashed py-3.5 text-sm font-medium uppercase text-gray-900 transition first:border-t-0 hover:text-gray-900 dark: dark:text-white"
             activeClassName="text-gray-900 dark:text-white"
           >
             Notification

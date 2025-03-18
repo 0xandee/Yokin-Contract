@@ -1,30 +1,30 @@
 Arguments: 
-  /Users/0xandee/.nvm/versions/node/v18.18.0/bin/node /usr/local/bin/yarn add @doko-js
+  /Users/0xandee/.nvm/versions/node/v23.9.0/bin/node /usr/local/bin/yarn add @demox-labs/aleo-wallet-adapter-puzzle @demox-labs/aleo-wallet-adapter-avail
 
 PATH: 
-  /Users/0xandee/homebrew/opt/mysql-client/bin:/Users/0xandee/.cairo/target/release:/Users/0xandee/.pyenv/shims:/usr/local/opt/openssl@3/bin:/Users/0xandee/.pyenv/bin:/Users/0xandee/.nvm/versions/node/v18.18.0/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/usr/local/Caskroom/miniconda/base/bin:/usr/local/Caskroom/miniconda/base/condabin:/Users/0xandee/homebrew/opt/mysql-client/bin:/Users/0xandee/.cairo/target/release:/usr/local/opt/openssl@3/bin:/Users/0xandee/.pyenv/bin:/Users/0xandee/.nvm/versions/node/v18.18.0/bin:/Users/0xandee/.starkli/bin:/Users/0xandee/.cargo/bin:/Users/0xandee/.foundry/bin:/Users/0xandee/.local/bin:/Users/0xandee/.dojo/bin:/Users/0xandee/Users/0xandee/go/bin/sid:/Users/0xandee/.aztec/bin:/Users/0xandee/.local/bin:/Users/0xandee/Users/0xandee/go/bin/sid:/Users/0xandee/.aztec/bin
+  /Users/0xandee/homebrew/opt/mysql-client/bin:/Users/0xandee/.cairo/target/release:/Users/0xandee/.pyenv/shims:/usr/local/opt/openssl@3/bin:/Users/0xandee/.pyenv/bin:/Users/0xandee/.nvm/versions/node/v23.9.0/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/usr/local/Caskroom/miniconda/base/bin:/usr/local/Caskroom/miniconda/base/condabin:/Users/0xandee/homebrew/opt/mysql-client/bin:/Users/0xandee/.cairo/target/release:/usr/local/opt/openssl@3/bin:/Users/0xandee/.pyenv/bin:/Users/0xandee/.nvm/versions/node/v23.9.0/bin:/Users/0xandee/.starkli/bin:/Users/0xandee/.cargo/bin:/Users/0xandee/.foundry/bin:/Users/0xandee/.local/bin:/Users/0xandee/.dojo/bin:/Users/0xandee/Users/0xandee/go/bin/sid:/Users/0xandee/.aztec/bin:/Users/0xandee/.local/bin:/Users/0xandee/Users/0xandee/go/bin/sid:/Users/0xandee/.aztec/bin
 
 Yarn version: 
   1.22.19
 
 Node version: 
-  18.18.0
+  23.9.0
 
 Platform: 
   darwin arm64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@doko-js: Request "https://registry.yarnpkg.com/@doko-js" returned a 405
-      at params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66154:18)
+  Error: https://registry.yarnpkg.com/@demox-labs%2faleo-wallet-adapter-puzzle: Not found
+      at params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66145:18)
       at self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140890:22)
-      at Request.emit (node:events:517:28)
+      at Request.emit (node:events:507:28)
       at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141862:10)
-      at Request.emit (node:events:517:28)
+      at Request.emit (node:events:507:28)
       at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141784:12)
-      at Object.onceWrapper (node:events:631:28)
-      at IncomingMessage.emit (node:events:529:35)
-      at endReadableNT (node:internal/streams/readable:1368:12)
-      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+      at Object.onceWrapper (node:events:621:28)
+      at IncomingMessage.emit (node:events:519:35)
+      at endReadableNT (node:internal/streams/readable:1696:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
 npm manifest: 
   {
@@ -46,6 +46,7 @@ npm manifest:
       "@demox-labs/aleo-wallet-adapter-leo": "^0.0.24",
       "@demox-labs/aleo-wallet-adapter-react": "^0.0.21",
       "@demox-labs/aleo-wallet-adapter-reactui": "^0.0.35",
+      "@doko-js/wasm": "^1.0.0",
       "@headlessui/react": "1.6.5",
       "@hookform/resolvers": "2.9.1",
       "@provablehq/sdk": "^0.8.5",
@@ -1144,6 +1145,11 @@ Lockfile:
     dependencies:
       "@demox-labs/aleo-wallet-adapter-base" "^0.0.22"
       "@demox-labs/aleo-wallet-adapter-react" "^0.0.21"
+  
+  "@doko-js/wasm@^1.0.0":
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/@doko-js/wasm/-/wasm-1.0.0.tgz#0ce9a08b30e7b71aa03ca74f2f1734b35fa7cea3"
+    integrity sha512-0By2vO6P1R8wZvHCmIfwENG3XxB+kUGSoUZXjXTWqXqIOqx4jfzGC48ahA52uuT+6A3t9D1IP9zhnt+pUyxfjw==
   
   "@emotion/is-prop-valid@^0.8.2":
     version "0.8.8"

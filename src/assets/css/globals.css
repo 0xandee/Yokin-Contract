@@ -8,6 +8,13 @@
   html,
   body {
     @apply antialiased bg-body font-body dark:bg-dark dark:text-white;
+    overflow-x: hidden;
+    overscroll-behavior: none;
+    height: 100%;
+    position: relative;
+  }
+  #__next {
+    min-height: 100%;
   }
   .dynamic-html h6 {
     @apply font-medium uppercase;

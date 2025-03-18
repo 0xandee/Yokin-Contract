@@ -132,7 +132,7 @@ const Deposit: NextPageWithLayout = () => {
             <input
               type="number"
               className="w-10/12 appearance-none rounded-lg border-2 border-gray-200 bg-transparent py-1 text-sm tracking-tighter text-gray-900 outline-none transition-all placeholder:text-gray-600 focus:border-gray-900 ltr:pr-5 ltr:pl-10 rtl:pr-10 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-500"
-              placeholder="Pool ID"
+              placeholder="Pool ID" min={1}
               onChange={(event) => { setPoolId(event.currentTarget.value) }}
               value={poolId ?? ''}
             />
